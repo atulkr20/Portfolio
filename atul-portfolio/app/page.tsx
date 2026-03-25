@@ -1,8 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Skills from "@/components/Skills";
+import TechMarquee from "@/components/TechMarquee";
 import Works from "@/components/Works";
 import Stats from "@/components/Stats";
+import GitHubGraph from "@/components/GitHubGraph";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -21,13 +23,17 @@ export default function Home() {
       {/* SECTION 3: Skills */}
       <Skills />
 
+      {/* Infinite Scrolling Tech Ticker */}
+      <TechMarquee />
+
       {/* SECTION 4: Works */}
       <Works />
 
       {/* Stats Row */}
       <Stats />
 
-
+      {/* GitHub Activity Graph */}
+      <GitHubGraph />
 
       {/* SECTION 6: Contact */}
       <Contact />

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const cardVariant = {
   hidden: { opacity: 0, y: 24 },
@@ -13,7 +14,7 @@ const cardVariant = {
 
 /* ── SVG visuals ── */
 const HermesVisual = () => (
-  <div className="absolute right-0 top-0 bottom-0 w-2/5 overflow-hidden">
+  <div className="absolute right-0 top-0 bottom-0 w-2/5 overflow-hidden pointer-events-none">
     <svg viewBox="0 0 200 300" width="100%" height="100%" preserveAspectRatio="xMaxYMid slice" xmlns="http://www.w3.org/2000/svg">
       <rect width="200" height="300" fill="#111" />
       {[0,1,2,3,4,5,6,7].map(i => <line key={`h${i}`} x1="0" y1={20+i*35} x2="200" y2={20+i*35} stroke="#f97316" strokeWidth="0.8" opacity="0.4"/>)}
@@ -50,43 +51,93 @@ const BobVisual = () => (
   </div>
 );
 
-const FaultForgeVisual = () => (
-  <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
-    <svg viewBox="0 0 160 160" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="80" cy="80" r="60" fill="none" stroke="#f97316" strokeWidth="1.5" strokeDasharray="6 4"/>
-      <circle cx="80" cy="80" r="40" fill="none" stroke="#f97316" strokeWidth="1" strokeDasharray="4 4" opacity="0.6"/>
-      <circle cx="80" cy="80" r="20" fill="#f97316" opacity="0.3"/>
-      {[0,60,120,180,240,300].map((deg,i) => {
-        const rad = (deg * Math.PI) / 180;
-        return <line key={i} x1={80+20*Math.cos(rad)} y1={80+20*Math.sin(rad)} x2={80+60*Math.cos(rad)} y2={80+60*Math.sin(rad)} stroke="#f97316" strokeWidth="1.2" opacity="0.5"/>;
-      })}
-    </svg>
-  </div>
-);
+/* ── Modal Project Data ── */
+type ProjectId = "ledgerpay" | "hermes" | "neuralproxy" | "bob";
+
+const PROJECT_DETAILS = {
+  ledgerpay: {
+    title: "LedgerPay",
+    tag: "Fintech",
+    tech: ["Node.js", "PostgreSQL", "Redis", "TypeScript"],
+    desc: [
+      "A highly robust double-entry accounting wallet system engineered to handle concurrent transactions entirely without race conditions.",
+      "Implemented PostgreSQL row-level locking (FOR UPDATE) to guarantee atomic balance updates across large concurrent requests.",
+      "Utilized Redis for idempotency keys to completely eliminate duplicate double-spending risks, strictly maintaining ACID compliance."
+    ],
+    github: "https://github.com/atulkr20",
+    live: "https://ledgerpay.your-deployed-site.com",
+    theme: "#f97316"
+  },
+  hermes: {
+    title: "Hermes",
+    tag: "Backend Infrastructure",
+    tech: ["BullMQ", "Node.js", "HMAC-SHA256", "Redis", "TypeScript"],
+    desc: [
+      "A Stripe-style webhook delivery engine built to guarantee message delivery payloads across distributed systems without data-loss.",
+      "Engineered on top of BullMQ for heavily distributed job processing. Features built-in exponential backoff, automatic retries for failed endpoints, and dead-letter queues.",
+      "Secures all outgoing JSON payloads with HMAC-SHA256 cryptographic signatures to ensure authenticity on the receiver's end."
+    ],
+    github: "https://github.com/atulkr20/Hermes",
+    live: null,
+    theme: "#111"
+  },
+  neuralproxy: {
+    title: "NeuralProxy",
+    tag: "AI Infrastructure",
+    tech: ["Node.js", "Redis", "OpenAI API", "TypeScript", "Docker"],
+    desc: [
+      "An intelligent LLM proxy gateway designed to seamlessly sit between internal systems and external AI providers (OpenAI, Anthropic).",
+      "Implements a Redis-backed sliding-window rate limiter to strictly control organizational API costs and throttle abuse.",
+      "Features a clever distributed caching layer using SHA-256 hashes of text prompts, instantly serving repeated AI queries for free without pinging external providers."
+    ],
+    github: "https://github.com/atulkr20",
+    live: "https://neuralproxy.your-deployed-site.com",
+    theme: "#111"
+  },
+  bob: {
+    title: "Bob-the-Builder",
+    tag: "AI / Automation",
+    tech: ["Gemini API", "BullMQ", "Node.js", "TypeScript"],
+    desc: [
+      "An automated AI-to-API application scaffolding tool designed to rapidly accelerate initial backend boilerplate.",
+      "You describe the HTTP routes you want in plain text, and it generates fully functional Node.js/Express API codebases along with tests.",
+      "Uses the Gemini API to intelligently parse requirements, relying on BullMQ to handle the heavy background generation jobs without blocking the main event loops."
+    ],
+    github: "https://github.com/atulkr20/Bob-the-Builder",
+    live: null,
+    theme: "#e4cca6"
+  }
+};
 
 export default function Works() {
+  const [selected, setSelected] = useState<ProjectId | null>(null);
+
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    if (selected) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "unset";
+    return () => { document.body.style.overflow = "unset"; };
+  }, [selected]);
+
+  const activeData = selected ? PROJECT_DETAILS[selected] : null;
+
   return (
-    <section id="works" className="w-full max-w-4xl mx-auto px-4 mt-16">
-      {/* Heading */}
+    <section id="works" className="w-full max-w-4xl mx-auto px-4 mt-16 relative">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="font-pixel text-center text-5xl sm:text-6xl mb-10 tracking-tight leading-tight"
+        className="font-pixel text-center text-5xl sm:text-6xl mb-10 tracking-tight leading-tight select-none"
         style={{ fontFamily: "'Press Start 2P', monospace" }}
       >
         Works
       </motion.h2>
 
-      {/* Row 1: Card 1 (small orange) + Card 2 (wide white) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
-        {/* Card 1 — LedgerPay (orange, small) */}
-        <motion.a
-          href="https://ledgerpay.your-deployed-site.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          id="project-ledgerpay"
+        {/* Card 1 */}
+        <motion.div
+          onClick={() => setSelected("ledgerpay")}
           custom={0}
           variants={cardVariant}
           initial="hidden"
@@ -96,26 +147,26 @@ export default function Works() {
           className="relative overflow-hidden border-2 border-black cursor-pointer flex flex-col justify-between block"
           style={{ background: "#f97316", boxShadow: "4px 4px 0px #111", minHeight: "200px" }}
         >
-          <div className="p-5">
-            <span className="text-[10px] font-bold px-2 py-1 bg-black text-white border border-black">
-              Fintech
-            </span>
-            <h3 className="font-pixel text-black text-sm mt-4 leading-snug" style={{ fontFamily: "'Press Start 2P', monospace" }}>
-              LedgerPay
-            </h3>
-            <p className="text-[11px] font-medium mt-2 text-black opacity-80 leading-relaxed">
-              Double-entry wallet system with PostgreSQL row-level locking, Redis, idempotency keys
-            </p>
+          <div className="p-5 flex flex-col justify-between h-full pointer-events-none">
+            <div>
+              <span className="text-[10px] font-bold px-2 py-1 bg-black text-white border border-black">Fintech</span>
+              <h3 className="font-pixel text-black text-sm mt-4 leading-snug" style={{ fontFamily: "'Press Start 2P', monospace" }}>LedgerPay</h3>
+              <p className="text-[11px] font-medium mt-2 text-black opacity-80 leading-relaxed">
+                Double-entry wallet system with PostgreSQL row-level locking, Redis, idempotency keys
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-1.5 mt-4">
+              {PROJECT_DETAILS.ledgerpay.tech.map(tag => (
+                <span key={tag} className="text-[8px] font-bold px-2 py-0.5 bg-black text-[#f97316] border border-black" style={{ fontFamily: "monospace" }}>{tag}</span>
+              ))}
+            </div>
           </div>
-          <div className="absolute top-1/2 right-3 -translate-y-1/2 text-7xl opacity-10 font-bold select-none">₹</div>
-        </motion.a>
+          <div className="absolute top-1/2 right-3 -translate-y-1/2 text-7xl opacity-10 font-bold select-none pointer-events-none">₹</div>
+        </motion.div>
 
-        {/* Card 2 — Hermes (wide white, spans 2 cols) */}
-        <motion.a
-          href="https://github.com/atulkr20/Hermes"
-          target="_blank"
-          rel="noopener noreferrer"
-          id="project-hermes"
+        {/* Card 2 */}
+        <motion.div
+          onClick={() => setSelected("hermes")}
           custom={1}
           variants={cardVariant}
           initial="hidden"
@@ -125,29 +176,26 @@ export default function Works() {
           className="relative overflow-hidden border-2 border-black cursor-pointer md:col-span-2 flex flex-col justify-between block"
           style={{ background: "#ffffff", boxShadow: "4px 4px 0px #111", minHeight: "200px" }}
         >
-          <div className="p-5 relative z-10" style={{ paddingRight: "42%" }}>
-            <span className="text-[10px] font-bold px-2 py-1 bg-[#f97316] text-white border border-black">
-              Backend Infrastructure
-            </span>
-            <h3 className="font-pixel text-2xl mt-4 leading-snug text-black" style={{ fontFamily: "'Press Start 2P', monospace" }}>
-              Hermes
-            </h3>
+          <div className="p-5 relative z-10 pointer-events-none" style={{ paddingRight: "42%" }}>
+            <span className="text-[10px] font-bold px-2 py-1 bg-[#f97316] text-white border border-black">Backend Infrastructure</span>
+            <h3 className="font-pixel text-2xl mt-4 leading-snug text-black" style={{ fontFamily: "'Press Start 2P', monospace" }}>Hermes</h3>
             <p className="text-[11px] font-medium mt-2 text-gray-600 leading-relaxed">
               Stripe-style webhook delivery engine with BullMQ retry queues, exponential backoff, HMAC-SHA256 signing
             </p>
+            <div className="flex flex-wrap gap-1.5 mt-4">
+              {PROJECT_DETAILS.hermes.tech.map(tag => (
+                <span key={tag} className="text-[8px] font-bold px-2 py-0.5 bg-black text-white border border-black" style={{ fontFamily: "monospace" }}>{tag}</span>
+              ))}
+            </div>
           </div>
           <HermesVisual />
-        </motion.a>
+        </motion.div>
       </div>
 
-      {/* Row 2: Card 3 (wide black) + Card 4 (white medium) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
-        {/* Card 3 — NeuralProxy (wide black, spans 2 cols) */}
-        <motion.a
-          href="https://neuralproxy.your-deployed-site.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          id="project-neuralproxy"
+        {/* Card 3 */}
+        <motion.div
+          onClick={() => setSelected("neuralproxy")}
           custom={2}
           variants={cardVariant}
           initial="hidden"
@@ -158,25 +206,23 @@ export default function Works() {
           style={{ background: "#111111", boxShadow: "4px 4px 0px #111", minHeight: "200px" }}
         >
           <NeuralProxyVisual />
-          <div className="p-5 relative z-10">
-            <span className="text-[10px] font-bold px-2 py-1 bg-[#f97316] text-white border border-[#f97316]">
-              AI Infrastructure
-            </span>
-            <h3 className="font-pixel text-white text-xl mt-4 leading-snug" style={{ fontFamily: "'Press Start 2P', monospace" }}>
-              NeuralProxy
-            </h3>
+          <div className="p-5 relative z-10 pointer-events-none">
+            <span className="text-[10px] font-bold px-2 py-1 bg-[#f97316] text-white border border-[#f97316]">AI Infrastructure</span>
+            <h3 className="font-pixel text-white text-xl mt-4 leading-snug" style={{ fontFamily: "'Press Start 2P', monospace" }}>NeuralProxy</h3>
             <p className="text-[11px] font-medium mt-2 text-gray-400 leading-relaxed">
               LLM proxy with multi-provider routing, Redis sliding-window rate limiting, SHA-256 prompt caching
             </p>
+            <div className="flex flex-wrap gap-1.5 mt-4">
+              {PROJECT_DETAILS.neuralproxy.tech.map(tag => (
+                <span key={tag} className="text-[8px] font-bold px-2 py-0.5 bg-[#f97316] text-black border border-[#f97316]" style={{ fontFamily: "monospace" }}>{tag}</span>
+              ))}
+            </div>
           </div>
-        </motion.a>
+        </motion.div>
 
-        {/* Card 4 — Bob-the-Builder (white medium) */}
-        <motion.a
-          href="https://github.com/atulkr20/Bob-the-Builder"
-          target="_blank"
-          rel="noopener noreferrer"
-          id="project-bob"
+        {/* Card 4 */}
+        <motion.div
+          onClick={() => setSelected("bob")}
           custom={3}
           variants={cardVariant}
           initial="hidden"
@@ -187,61 +233,30 @@ export default function Works() {
           style={{ background: "#ffffff", boxShadow: "4px 4px 0px #111", minHeight: "200px" }}
         >
           <BobVisual />
-          <div className="p-5 relative z-10">
-            <span className="text-[10px] font-bold px-2 py-1 bg-[#f97316] text-white border border-black">
-              AI / Automation
-            </span>
-            <h3 className="font-pixel text-black text-sm mt-4 leading-snug" style={{ fontFamily: "'Press Start 2P', monospace" }}>
-              Bob-the-Builder
-            </h3>
+          <div className="p-5 relative z-10 pointer-events-none">
+            <span className="text-[10px] font-bold px-2 py-1 bg-[#f97316] text-white border border-black">AI / Automation</span>
+            <h3 className="font-pixel text-black text-sm mt-4 leading-snug" style={{ fontFamily: "'Press Start 2P', monospace" }}>Bob-the-Builder</h3>
             <p className="text-[11px] font-medium mt-2 text-gray-600 leading-relaxed">
               AI-to-API generator using Gemini API and BullMQ job processing
             </p>
+            <div className="flex flex-wrap gap-1.5 mt-4">
+              {PROJECT_DETAILS.bob.tech.map(tag => (
+                <span key={tag} className="text-[8px] font-bold px-2 py-0.5 bg-black text-white border border-black" style={{ fontFamily: "monospace" }}>{tag}</span>
+              ))}
+            </div>
           </div>
-        </motion.a>
+        </motion.div>
       </div>
 
-      {/* Row 3: Card 5 — FaultForge (black small, left-aligned) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <motion.a
-          href="https://github.com/atulkr20/FaultForge"
-          target="_blank"
-          rel="noopener noreferrer"
-          id="project-faultforge"
-          custom={4}
-          variants={cardVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          whileHover={{ y: -5, boxShadow: "7px 7px 0px #111" }}
-          className="relative overflow-hidden border-2 border-black cursor-pointer flex flex-col justify-between block"
-          style={{ background: "#111111", boxShadow: "4px 4px 0px #111", minHeight: "180px" }}
-        >
-          <FaultForgeVisual />
-          <div className="p-5 relative z-10">
-            <span className="text-[10px] font-bold px-2 py-1 bg-[#f97316] text-white border border-[#f97316]">
-              DevTools
-            </span>
-            <h3 className="font-pixel text-white text-sm mt-4 leading-snug" style={{ fontFamily: "'Press Start 2P', monospace" }}>
-              FaultForge
-            </h3>
-            <p className="text-[11px] font-medium mt-2 text-gray-400 leading-relaxed">
-              Chaos engineering tool with distributed agents for testing system resilience
-            </p>
-          </div>
-        </motion.a>
-
-        {/* CTA sits to the right of FaultForge on desktop */}
+      <div className="flex flex-col items-center justify-center gap-4 py-6">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="md:col-span-2 flex flex-col items-center justify-center gap-4 py-6"
+          className="flex flex-col items-center justify-center gap-4"
         >
-          <p className="text-gray-600 font-medium text-sm">
-            Want to see more on GitHub?
-          </p>
+          <p className="text-gray-600 font-medium text-sm select-none">Want to see more on GitHub?</p>
           <motion.a
             id="view-all-works-btn"
             href="https://github.com/atulkr20"
@@ -255,6 +270,101 @@ export default function Works() {
           </motion.a>
         </motion.div>
       </div>
+
+      {/* ── Modal Overlay ── */}
+      <AnimatePresence>
+        {selected && activeData && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 backdrop-blur-sm"
+            style={{ background: "rgba(0,0,0,0.6)" }}
+            onClick={() => setSelected(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 15, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: -10, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-2xl bg-[#d6d9c1] border-2 border-black flex flex-col relative"
+              style={{ boxShadow: "8px 8px 0px #111", maxHeight: "90vh" }}
+            >
+              {/* Modal Header */}
+              <div 
+                className="flex items-center justify-between px-5 py-4 border-b-2 border-black"
+                style={{ background: activeData.theme }}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="font-pixel text-xl tracking-tight" style={{ fontFamily: "'Press Start 2P', monospace", color: activeData.theme === "#111" ? "#fff" : "#000" }}>
+                    {activeData.title}
+                  </span>
+                </div>
+                <button 
+                  onClick={() => setSelected(null)}
+                  className="w-8 h-8 flex items-center justify-center border-2 border-black bg-white hover:bg-[#f97316] transition-colors"
+                  style={{ boxShadow: "2px 2px 0px #111" }}
+                >
+                  <span className="font-bold pb-0.5">×</span>
+                </button>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-6 md:p-8 overflow-y-auto" style={{ background: "white" }}>
+                <span className="text-[10px] uppercase font-bold px-2 py-1 bg-black text-white border border-black mb-6 inline-block tracking-widest leading-none">
+                  {activeData.tag}
+                </span>
+
+                <div className="space-y-4 mb-8">
+                  {activeData.desc.map((p, i) => (
+                    <p key={i} className="text-gray-800 text-sm md:text-base leading-relaxed tracking-wide font-medium">
+                      {p}
+                    </p>
+                  ))}
+                </div>
+
+                <div className="mb-8">
+                  <h4 className="text-xs font-bold uppercase tracking-widest text-[#f97316] mb-3 border-b-2 border-gray-100 pb-2">Tech Stack</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {activeData.tech.map(tag => (
+                      <span key={`modal-tag-${tag}`} className="text-[10px] font-bold px-2 py-1 bg-gray-100 text-black border border-gray-300">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer / Actions */}
+              <div className="p-5 border-t-2 border-black bg-gray-50 flex gap-4">
+                {activeData.github && (
+                  <a
+                    href={activeData.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center font-bold text-xs uppercase tracking-widest py-3 border-2 border-black bg-black text-white hover:bg-[#f97316] hover:text-black transition-colors"
+                    style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "9px" }}
+                  >
+                    View Code
+                  </a>
+                )}
+                {activeData.live && (
+                  <a
+                    href={activeData.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center font-bold text-xs uppercase tracking-widest py-3 border-2 border-black bg-white text-black hover:bg-green-400 transition-colors"
+                    style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "9px", boxShadow: "3px 3px 0px #111" }}
+                  >
+                    Live Demo
+                  </a>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

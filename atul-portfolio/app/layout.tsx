@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import CustomCursor from "@/components/CustomCursor";
+import ScrollProgress from "@/components/ScrollProgress";
 
 export const metadata: Metadata = {
   title: "Atul — Backend Engineer",
@@ -7,17 +9,43 @@ export const metadata: Metadata = {
     "Portfolio of Atul, a backend engineer who builds the stuff you don't see. APIs, queues, distributed systems, the infrastructure layer that keeps everything from falling apart.",
   keywords: [
     "Backend Engineer",
-    "Fintech",
+    "Node.js",
+    "TypeScript",
+    "PostgreSQL",
+    "Redis",
+    "BullMQ",
+    "Docker",
     "Distributed Systems",
     "API Design",
+    "Fintech",
     "Portfolio",
     "Atul",
   ],
-  authors: [{ name: "Atul" }],
+  authors: [{ name: "Atul", url: "https://github.com/atulkr20" }],
   openGraph: {
     title: "Atul — Backend Engineer",
-    description: "I build systems that don't break.",
+    description:
+      "I build systems that don't break. APIs, queues, distributed systems — the infrastructure layer that keeps everything from falling apart.",
+    url: "https://itsatul.tech",
+    siteName: "Atul's Portfolio",
+    locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Atul — Backend Engineer",
+    description:
+      "I build systems that don't break. APIs, queues, distributed systems — the infrastructure layer that keeps everything from falling apart.",
+    creator: "@atulkr20",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+    },
   },
 };
 
@@ -40,7 +68,11 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <ScrollProgress />
+        <CustomCursor />
+        {children}
+      </body>
     </html>
   );
 }

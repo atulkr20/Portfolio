@@ -3,8 +3,30 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function Hero() {
+  const bioText = "I'm Atul — a backend engineer who builds the stuff you don't see. APIs, queues, distributed systems, the infrastructure layer that keeps everything from falling apart.";
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTyping, setIsTyping] = useState(true);
+
+  useEffect(() => {
+    let i = 0;
+    // Slightly randomized speed for a highly realistic mechanical typing feel
+    const typeNextChar = () => {
+      setDisplayedText(bioText.slice(0, i + 1));
+      i++;
+      if (i < bioText.length) {
+        setTimeout(typeNextChar, Math.random() * 30 + 30);
+      } else {
+        setIsTyping(false);
+      }
+    };
+    
+    // Start typing after a short delay matching the card's entry animation
+    const timeoutId = setTimeout(typeNextChar, 700);
+    return () => clearTimeout(timeoutId);
+  }, []);
   return (
     <section
       id="hero"
@@ -53,10 +75,14 @@ export default function Hero() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.15 }}
-        className="retro-card px-6 py-5"
+        className="retro-card px-6 py-5 bg-white"
       >
         <p className="text-base text-gray-800 leading-relaxed mb-2 font-medium">
-          I&apos;m Atul — a backend engineer who builds the stuff you don&apos;t see. APIs, queues, distributed systems, the infrastructure layer that keeps everything from falling apart.
+          {displayedText}
+          <span 
+            className={`inline-block w-2.5 h-[1.1em] align-middle ml-1 bg-[#f97316] ${isTyping ? "opacity-100" : "animate-pulse"}`}
+            aria-hidden="true"
+          />
         </p>
         <p className="text-base text-gray-700 leading-relaxed">
           Explore my{" "}

@@ -1,12 +1,40 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { useEffect, useRef } from "react";
 
+// Each stat: numeric target + optional suffix, and a label
 const stats = [
-  { value: "5+", label: "Projects Built" },
-  { value: "100%", label: "Caffeine Fueled" },
-  { value: "2026", label: "Graduating" },
+  { target: 5, suffix: "+", label: "Projects Built" },
+  { target: 100, suffix: "%", label: "Caffeine Fueled" },
+  { target: 2026, suffix: "", label: "Graduating" },
 ];
+
+function AnimatedNumber({ target, suffix }: { target: number; suffix: string }) {
+  const count = useMotionValue(0);
+  const ref = useRef<HTMLParagraphElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const rounded = useTransform(count, (v) => `${Math.floor(v)}${suffix}`);
+
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(count, target, {
+      duration: 1.8,
+      ease: "easeOut",
+    });
+    return controls.stop;
+  }, [inView, count, target]);
+
+  return (
+    <motion.p
+      ref={ref}
+      className="font-pixel text-3xl sm:text-4xl mb-2 tracking-tight"
+      style={{ fontFamily: "'Press Start 2P', monospace" }}
+    >
+      {rounded}
+    </motion.p>
+  );
+}
 
 export default function Stats() {
   return (
@@ -27,12 +55,7 @@ export default function Stats() {
             transition={{ delay: i * 0.12, duration: 0.4 }}
             className="text-center"
           >
-            <p
-              className="font-pixel text-3xl sm:text-4xl mb-2 tracking-tight"
-              style={{ fontFamily: "'Press Start 2P', monospace" }}
-            >
-              {stat.value}
-            </p>
+            <AnimatedNumber target={stat.target} suffix={stat.suffix} />
             <p className="text-xs text-gray-500 font-medium uppercase tracking-widest">
               {stat.label}
             </p>
