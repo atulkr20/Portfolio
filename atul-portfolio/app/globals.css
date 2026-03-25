@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-pixel: 'Press Start 2P', monospace;
+  --color-bg: #d6d9c1;
+  --color-accent: #f97316;
+  --color-card-black: #111111;
+}
+
+:root {
+  --bg: #d6d9c1;
+  --card-white: #ffffff;
+  --card-black: #111111;
+  --accent: #f97316;
+  --border: #111111;
+  --shadow: 4px 4px 0px #111111;
+  --shadow-hover: 7px 7px 0px #111111;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  color: #111111;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Retro card style */
+.retro-card {
+  background: var(--card-white);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.retro-card-black {
+  background: var(--card-black);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* Halftone CSS effect */
+.halftone-container {
+  position: relative;
+  overflow: hidden;
+  background: #e8c97a;
+}
+
+.halftone-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, #2a1a0a 1.5px, transparent 1.5px);
+  background-size: 6px 6px;
+  mix-blend-mode: multiply;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* ── Real-photo halftone treatment ── */
+/* Wrapper: provides the vintage paper color */
+.halftone-photo {
+  position: relative;
+  overflow: hidden;
+  background: #ceb284;
+  /* pale warm sepia/newspaper tone */
+}
+
+/* The actual <img> becomes high-contrast B&W and multiplies with the paper color */
+.halftone-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Boost contrast to give it a stark newspaper ink vibe */
+  filter: grayscale(100%) contrast(1.6) brightness(1.1);
+  /* Multiply makes white=transparent (showing paper) and black=ink */
+  mix-blend-mode: multiply;
+}
+
+/* Halftone dot pattern overlay */
+.halftone-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Crisp tiny black dots */
+  background-image: radial-gradient(circle, #000 1.2px, transparent 1.5px);
+  background-size: 4px 4px;
+  /* Overlay makes the dots blend dynamically with the image's dark/light spots */
+  mix-blend-mode: overlay;
+  opacity: 0.85;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Pixel font helper */
+.font-pixel {
+  font-family: 'Press Start 2P', monospace;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #111;
+}
+
+.orange-pill {
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border: 1px solid #111;
+  display: inline-block;
+  letter-spacing: 0.03em;
+}
+
+/* Hard stepped corners for black containers matching the reference design */
+.pixel-corners {
+  clip-path: polygon(8px 0, calc(100% - 8px) 0,
+      calc(100% - 8px) 8px, 100% 8px,
+      100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px),
+      calc(100% - 8px) 100%, 8px 100%,
+      8px calc(100% - 8px), 0 calc(100% - 8px),
+      0 8px, 8px 8px);
+}
