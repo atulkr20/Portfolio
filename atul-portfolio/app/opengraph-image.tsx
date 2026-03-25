@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const dynamic = "force-static";
 export const alt = "Atul — Backend Engineer";
 export const size = { width: 1200, height: 630 };
@@ -54,7 +53,6 @@ export default function OGImage() {
               fontWeight: 800,
               padding: "6px 14px",
               marginBottom: 28,
-              width: "fit-content",
               letterSpacing: "0.1em",
               textTransform: "uppercase",
             }}
