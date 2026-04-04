@@ -17,10 +17,10 @@ const HermesVisual = () => (
   <div className="absolute right-0 top-0 bottom-0 w-2/5 overflow-hidden pointer-events-none">
     <svg viewBox="0 0 200 300" width="100%" height="100%" preserveAspectRatio="xMaxYMid slice" xmlns="http://www.w3.org/2000/svg">
       <rect width="200" height="300" fill="#111" />
-      {[0,1,2,3,4,5,6,7].map(i => <line key={`h${i}`} x1="0" y1={20+i*35} x2="200" y2={20+i*35} stroke="#f97316" strokeWidth="0.8" opacity="0.4"/>)}
-      {[0,1,2,3,4].map(i => <line key={`v${i}`} x1={20+i*40} y1="0" x2={20+i*40} y2="300" stroke="#f97316" strokeWidth="0.8" opacity="0.4"/>)}
-      {[[20,20],[60,55],[100,20],[140,90],[20,125],[60,160],[100,195],[140,230],[20,265]].map(([cx,cy],i) => <circle key={i} cx={cx} cy={cy} r="5" fill="#f97316" opacity="0.8"/>)}
-      <path d="M10 150 L120 150 L120 100 L190 150 L120 200 L120 150" fill="#f97316" opacity="0.6"/>
+      {[0, 1, 2, 3, 4, 5, 6, 7].map(i => <line key={`h${i}`} x1="0" y1={20 + i * 35} x2="200" y2={20 + i * 35} stroke="#f97316" strokeWidth="0.8" opacity="0.4" />)}
+      {[0, 1, 2, 3, 4].map(i => <line key={`v${i}`} x1={20 + i * 40} y1="0" x2={20 + i * 40} y2="300" stroke="#f97316" strokeWidth="0.8" opacity="0.4" />)}
+      {[[20, 20], [60, 55], [100, 20], [140, 90], [20, 125], [60, 160], [100, 195], [140, 230], [20, 265]].map(([cx, cy], i) => <circle key={i} cx={cx} cy={cy} r="5" fill="#f97316" opacity="0.8" />)}
+      <path d="M10 150 L120 150 L120 100 L190 150 L120 200 L120 150" fill="#f97316" opacity="0.6" />
     </svg>
   </div>
 );
@@ -28,13 +28,13 @@ const HermesVisual = () => (
 const NeuralProxyVisual = () => (
   <div className="absolute inset-0 overflow-hidden opacity-25 pointer-events-none">
     <svg viewBox="0 0 300 200" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      {[[30,40],[30,100],[30,160],[110,20],[110,80],[110,140],[110,180],[200,60],[200,120],[270,90]].map(([cx,cy],i) => (
-        <circle key={i} cx={cx} cy={cy} r="8" fill="#f97316" opacity="0.9"/>
+      {[[30, 40], [30, 100], [30, 160], [110, 20], [110, 80], [110, 140], [110, 180], [200, 60], [200, 120], [270, 90]].map(([cx, cy], i) => (
+        <circle key={i} cx={cx} cy={cy} r="8" fill="#f97316" opacity="0.9" />
       ))}
-      {[[30,40,110,20],[30,40,110,80],[30,100,110,80],[30,100,110,140],[30,160,110,140],[30,160,110,180],
-        [110,20,200,60],[110,80,200,60],[110,80,200,120],[110,140,200,120],[110,180,200,120],
-        [200,60,270,90],[200,120,270,90]].map(([x1,y1,x2,y2],i) => (
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#f97316" strokeWidth="1.5" opacity="0.35"/>
+      {[[30, 40, 110, 20], [30, 40, 110, 80], [30, 100, 110, 80], [30, 100, 110, 140], [30, 160, 110, 140], [30, 160, 110, 180],
+      [110, 20, 200, 60], [110, 80, 200, 60], [110, 80, 200, 120], [110, 140, 200, 120], [110, 180, 200, 120],
+      [200, 60, 270, 90], [200, 120, 270, 90]].map(([x1, y1, x2, y2], i) => (
+        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#f97316" strokeWidth="1.5" opacity="0.35" />
       ))}
     </svg>
   </div>
@@ -43,9 +43,9 @@ const NeuralProxyVisual = () => (
 const BobVisual = () => (
   <div className="absolute bottom-0 right-0 left-0 h-20 overflow-hidden opacity-15 pointer-events-none">
     <svg viewBox="0 0 300 80" width="100%" height="80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <polyline points="0,60 40,40 80,55 120,25 160,38 200,12 260,30 300,20" fill="none" stroke="#111" strokeWidth="3"/>
-      {[15,55,95,135,175,215,265].map((x,i) => (
-        <rect key={i} x={x-7} y={80-[22,38,30,52,34,60,42][i]} width="14" height={[22,38,30,52,34,60,42][i]} fill="#111" opacity="0.4"/>
+      <polyline points="0,60 40,40 80,55 120,25 160,38 200,12 260,30 300,20" fill="none" stroke="#111" strokeWidth="3" />
+      {[15, 55, 95, 135, 175, 215, 265].map((x, i) => (
+        <rect key={i} x={x - 7} y={80 - [22, 38, 30, 52, 34, 60, 42][i]} width="14" height={[22, 38, 30, 52, 34, 60, 42][i]} fill="#111" opacity="0.4" />
       ))}
     </svg>
   </div>
@@ -64,8 +64,8 @@ const PROJECT_DETAILS = {
       "Implemented PostgreSQL row-level locking (FOR UPDATE) to guarantee atomic balance updates across large concurrent requests.",
       "Utilized Redis for idempotency keys to completely eliminate duplicate double-spending risks, strictly maintaining ACID compliance."
     ],
-    github: "https://github.com/atulkr20",
-    live: "https://ledgerpay.your-deployed-site.com",
+    github: "https://github.com/atulkr20/LedgerPay",
+    live: "https://ledgerpay.itsatul.tech/api-docs/",
     theme: "#f97316"
   },
   hermes: {
@@ -78,7 +78,7 @@ const PROJECT_DETAILS = {
       "Secures all outgoing JSON payloads with HMAC-SHA256 cryptographic signatures to ensure authenticity on the receiver's end."
     ],
     github: "https://github.com/atulkr20/Hermes",
-    live: null,
+    live: "https://hermes.itsatul.tech/dashboard",
     theme: "#111"
   },
   neuralproxy: {
@@ -90,8 +90,8 @@ const PROJECT_DETAILS = {
       "Implements a Redis-backed sliding-window rate limiter to strictly control organizational API costs and throttle abuse.",
       "Features a clever distributed caching layer using SHA-256 hashes of text prompts, instantly serving repeated AI queries for free without pinging external providers."
     ],
-    github: "https://github.com/atulkr20",
-    live: "https://neuralproxy.your-deployed-site.com",
+    github: "https://github.com/atulkr20/NeuralProxy",
+    live: "https://neuralproxy.itsatul.tech/api-docs/",
     theme: "#111"
   },
   bob: {
@@ -292,7 +292,7 @@ export default function Works() {
               style={{ boxShadow: "8px 8px 0px #111", maxHeight: "90vh" }}
             >
               {/* Modal Header */}
-              <div 
+              <div
                 className="flex items-center justify-between px-5 py-4 border-b-2 border-black"
                 style={{ background: activeData.theme }}
               >
@@ -301,7 +301,7 @@ export default function Works() {
                     {activeData.title}
                   </span>
                 </div>
-                <button 
+                <button
                   onClick={() => setSelected(null)}
                   className="w-8 h-8 flex items-center justify-center border-2 border-black bg-white hover:bg-[#f97316] transition-colors"
                   style={{ boxShadow: "2px 2px 0px #111" }}
@@ -346,10 +346,10 @@ export default function Works() {
                     className="flex-1 text-center font-bold text-xs uppercase tracking-widest py-3 border-2 border-black bg-black text-white hover:bg-[#f97316] hover:text-black transition-colors"
                     style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "9px" }}
                   >
-                    View Code
+                    Github
                   </a>
                 )}
-                {activeData.live && (
+                {activeData.live ? (
                   <a
                     href={activeData.live}
                     target="_blank"
@@ -357,8 +357,16 @@ export default function Works() {
                     className="flex-1 text-center font-bold text-xs uppercase tracking-widest py-3 border-2 border-black bg-white text-black hover:bg-green-400 transition-colors"
                     style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "9px", boxShadow: "3px 3px 0px #111" }}
                   >
-                    Live Demo
+                    Live Link
                   </a>
+                ) : (
+                  <button
+                    disabled
+                    className="flex-1 text-center font-bold text-xs uppercase tracking-widest py-3 border-2 border-black bg-gray-200 text-gray-400 cursor-not-allowed"
+                    style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "9px", boxShadow: "3px 3px 0px #111" }}
+                  >
+                    Coming Soon
+                  </button>
                 )}
               </div>
             </motion.div>

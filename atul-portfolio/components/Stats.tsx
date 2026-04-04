@@ -5,9 +5,9 @@ import { useEffect, useRef } from "react";
 
 // Each stat: numeric target + optional suffix, and a label
 const stats = [
-  { target: 5, suffix: "+", label: "Projects Built" },
+  { target: 404, suffix: "", label: "Sleep Not Found" },
   { target: 100, suffix: "%", label: "Caffeine Fueled" },
-  { target: 2026, suffix: "", label: "Graduating" },
+  { target: 1, suffix: "", label: "At A Time" },
 ];
 
 function AnimatedNumber({ target, suffix }: { target: number; suffix: string }) {
