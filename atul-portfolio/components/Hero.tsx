@@ -64,7 +64,7 @@ export default function Hero() {
         {/* Caption */}
         <div className="px-5 py-3 border-t border-black bg-white">
           <p className="text-sm italic text-gray-500 text-center">
-            &ldquo;I build systems that don&apos;t break.&rdquo;
+            &ldquo;Simplicity is the ultimate sophistication.&rdquo;
           </p>
         </div>
       </motion.div>
