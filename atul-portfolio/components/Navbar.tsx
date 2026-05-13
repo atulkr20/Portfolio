@@ -46,7 +46,7 @@ export default function Navbar() {
             <Github size={14} />
           </a>
           <a
-            href="/Atul resume v2.pdf"
+            href="/Atul_resume v3.pdf"
             target="_blank"
             rel="noopener noreferrer"
             id="navbar-resume-btn"
